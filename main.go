@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/spf13/viper"
+	"log"
 )
 
 func init() {
@@ -28,7 +29,10 @@ func main() {
 		panic(err)
 	}
 
-	messageHandler := handler.MessageHandler{}
+	messageHandler, err := handler.NewMessageHandler(viper.GetString("YOUTUBE_API_KEY"))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for update := range updates {
 		if update.Message == nil {
